@@ -1,5 +1,21 @@
+.division {
+    position: relative;
+    width: 700px;
+    height: 600px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.memoTableArea {
+    height: auto;
+    background-color: bisque;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
 table {
-    width: 100%;
+    width: 500px;
     border-collapse: collapse;
 }
 
@@ -16,4 +32,80 @@ th {
 td {
     margin-top: 10px;
     border: 1px solid #ddd;
+}
+
+/* ここから下に記載していく */
+body {
+    font-family: sans-serif;
+    color: #3b3b3b;
+
+}
+
+.inputArea {
+    background-color: rgba(16, 199, 178, 0.886);
+    width: 400px;
+    height: 30px;
+    margin-top: 19px;
+    padding: 20px;
+    border-radius: 8px;
+    border: none;
+}
+
+input {
+    border-radius: 8px;
+    border: #6e8787;
+    box-shadow: #3b3b3b;
+    padding: 5px 15px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 5px 15px;
+    margin: 0px 2px;
+
+}
+
+button:hover {
+    background-color: rgb(31, 129, 129);
+    color: #fff;
+}
+
+#needToDoArea {
+    width: 400px;
+    margin: 10px;
+    padding: 0px 10px;
+    border: 2px, solid, #aacfd0;
+    border-radius: 8px;
+    color: #3b3b3b;
+    min-height: 200px;
+
+}
+
+#doneArea {
+    width: 400px;
+    margin: 10px;
+    padding: 0px 10px;
+    border: 2px, solid, #aacfd0;
+    border-radius: 8px;
+    color: #3b3b3b;
+    min-height: 200px;
+    background-color: rgb(195, 236, 236);
+
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+
+}
+
+.list_row {
+    display: flex;
+    align-items: center;
+}
+
+.todoItem {
+    margin: 6px;
 }

@@ -10,75 +10,103 @@
 </head>
 
 <body>
-    <main>
-        <h2>メモアプリ</h2>
-        <input type="text" id="txtMemo" />
-        <input type="button" value="追加" onclick="entryMemo()" /><br>
-        <hr>
-        <input type="button" value="全削除" onclick="clearMemo()" /><br>
+    <div class="division">
+        <main>
+            <div class="memoTableArea">
+                <h2>メモアプリ</h2>
+                <input placeholder="メモを入力" id="txtMemo" />
+                <input type="button" value="追加" onclick="entryMemo()" /><br>
+                <hr>
+                <input type="button" value="全削除" onclick="clearMemo()" /><br>
 
-        <!-- テーブル要素を追加 -->
-        <table id="memoTable" border="1">
-            <thead>
-                <tr>
-                    <th>番号</th>
-                    <th>メモ内容</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- ここにメモが表示されます -->
-            </tbody>
-        </table>
+                <!-- テーブル要素を追加 -->
+                <table id="memoTable" border="1">
+                    <thead>
+                        <tr>
+                            <th>番号</th>
+                            <th>メモ内容</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- ここにメモが表示されます -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <div class="TodoArea">
+            <div class="inputArea">
+                <input id="addText" placeholder="TODOを入力">
+                <button id="add_btn">追加</button>
+            </div>
+            <!-- まずここ -->
 
-        <script>
-            // メモを追加する関数
-            let entryMemo = function () {
-                let txt = document.getElementById("txtMemo");
-                let table = document.getElementById("memoTable").getElementsByTagName('tbody')[0]; // テーブルのtbodyを取得
+            <div id="needToDoArea">
+                <p class="title">未完了のTODO</p>
+                <ul id="needToDo_list">
 
-                // メモの内容をテーブルに追加
+                </ul>
+
+            </div>
+            <div id="doneArea">
+                <p class="title">DONE</p>
+                <ul id="done_list">
+
+                </ul>
+            </div>
+            <script src="js/main.js"></script>
+
+        </div>
+
+    </div>
+    <script>
+        // メモを追加する関数
+        let entryMemo = function () {
+            let txt = document.getElementById("txtMemo");
+            let table = document.getElementById("memoTable").getElementsByTagName('tbody')[0]; // テーブルのtbodyを取得
+
+            // メモの内容をテーブルに追加
+            let row = table.insertRow();
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+
+            // ローカルストレージのデータを取得して、メモの番号を付ける
+            let memos = localStorage.getItem("memos") ? JSON.parse(localStorage.getItem("memos")) : [];
+            let memoIndex = memos.length + 1;
+
+            // セルにデータを設定
+            cell1.textContent = memoIndex;
+            cell2.textContent = txt.value;
+
+            // ローカルストレージにメモを保存
+            memos.push(txt.value);
+            localStorage.setItem("memos", JSON.stringify(memos));
+
+            // 入力フィールドをクリア
+            txt.value = "";
+        }
+
+        // 全削除の関数
+        let clearMemo = function () {
+            localStorage.removeItem("memos");  // ローカルストレージをクリア
+            let table = document.getElementById("memoTable").getElementsByTagName('tbody')[0];
+            table.innerHTML = "";  // テーブルの内容をクリア
+        }
+
+        // ページロード時にローカルストレージのデータをテーブルに表示する
+        window.onload = function () {
+            let memos = localStorage.getItem("memos") ? JSON.parse(localStorage.getItem("memos")) : [];
+            let table = document.getElementById("memoTable").getElementsByTagName('tbody')[0];
+
+            memos.forEach((memo, index) => {
                 let row = table.insertRow();
                 let cell1 = row.insertCell(0);
                 let cell2 = row.insertCell(1);
+                cell1.textContent = index + 1;  // 番号
+                cell2.textContent = memo;  // メモ内容
+            });
+        }
+    </script>
 
-                // ローカルストレージのデータを取得して、メモの番号を付ける
-                let memos = localStorage.getItem("memos") ? JSON.parse(localStorage.getItem("memos")) : [];
-                let memoIndex = memos.length + 1;
-
-                // セルにデータを設定
-                cell1.textContent = memoIndex;
-                cell2.textContent = txt.value;
-
-                // ローカルストレージにメモを保存
-                memos.push(txt.value);
-                localStorage.setItem("memos", JSON.stringify(memos));
-
-                // 入力フィールドをクリア
-                txt.value = "";
-            }
-
-            // 全削除の関数
-            let clearMemo = function () {
-                localStorage.removeItem("memos");  // ローカルストレージをクリア
-                let table = document.getElementById("memoTable").getElementsByTagName('tbody')[0];
-                table.innerHTML = "";  // テーブルの内容をクリア
-            }
-
-            // ページロード時にローカルストレージのデータをテーブルに表示する
-            window.onload = function () {
-                let memos = localStorage.getItem("memos") ? JSON.parse(localStorage.getItem("memos")) : [];
-                let table = document.getElementById("memoTable").getElementsByTagName('tbody')[0];
-
-                memos.forEach((memo, index) => {
-                    let row = table.insertRow();
-                    let cell1 = row.insertCell(0);
-                    let cell2 = row.insertCell(1);
-                    cell1.textContent = index + 1;  // 番号
-                    cell2.textContent = memo;  // メモ内容
-                });
-            }
-        </script>
-    </main>
 </body>
 
 
@@ -87,53 +115,5 @@
 let field = document.getElemtById("memoField");
 field.textContent = "";
 }
-
-for (let i = 0; i < localStorage.length; i++) { const key=localStorage.key(i); const value=localStorage.getItem(key);
-    const html=` <tr>
-    <td>${key}</td>
-    <td>${value}</td>
-    </tr>
-    `;
-    }
-
-    `
-    <tr>
-        <td>${key}</td>
-        <td>${value}</td>
-    </tr> -->
-
-<!-- $("#send").on("click", function () {
-    const msg = {
-    uname: $("#uname").val(),
-    uname: $("#text").val()
-
-    }
-    const id = push(dbRef);
-    set(id.meg); //データ登録完了
-    });
-    } -->
-
-
-<!-- $("#send").on("click", function () {
-                const msg = {
-                    uname: $("#uname").val(),
-                    uname: $("#text").val()
-
-                }
-                const id = push(dbRef);
-                set(id.meg); //データ登録完了
-            });
- -->
-
-<!-- めも￥：DOMオブジェクトは
-        createElement();
-
-        appendChild();
-
-        insertBefore();
-
-        removeChild();
-
-        firstChild();
 
    
